@@ -3,7 +3,11 @@ import { z } from "zod"
 const envSchema = z.object({
     PORT: z.string().optional(),
     BASEURL: z.string().min(1, { message: "Base is required" }),
-    MONGO_URI: z.string().min(1, { message: "MONGO_URI is required" })
+    MONGO_URI: z.string().min(1, { message: "MONGO_URI is required" }),
+    ACCESS_TOKEN_SECRET: z.string().min(1, { message: "ACCESS_TOKEN_SECRET is required" }),
+    ACCESS_TOKEN_SECRET_EXPIRY: z.string().min(1, { message: "ACCESS_TOKEN_SECRET_EXPIRY is required" }),
+    REFRESH_TOKEN_SECRET: z.string().min(1, { message: "REFRESH_TOKEN_SECRET is required" }),
+    REFRESH_TOKEN_SECRET_EXPIRY: z.string().min(1, { message: "REFRESH_TOKEN_SECRET_EXPIRY is required" }),
 })
 function createENV(env: NodeJS.ProcessEnv) {
     const validationResult = envSchema.safeParse(env)

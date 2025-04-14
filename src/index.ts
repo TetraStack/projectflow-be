@@ -5,11 +5,12 @@ import express from "express";
 import app from './app';
 
 app.use(express.json())
-app.get("/", (req, res) => {
-    res.status(200).json("It is up and running...")
-})
-
 const PORT = env.PORT ?? 8000
+
+//import routes here
+import { router as HealthCheckRouter } from "@/routes/healthCheck"
+
+app.use("/api/v1/healthCheck", HealthCheckRouter)
 
 connectDB().then(() => app.listen(PORT, () => {
     console.log(`server running on ${env.BASEURL}:${PORT}`)
