@@ -1,20 +1,9 @@
 import { env } from "@/env";
+import { decodeUserType } from "@/types/express";
 import { ApiError } from "@/utils/apiError";
 import { asyncHandler } from "@/utils/asyncHandler";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken"
-
-export type decodeUserType = {
-    _id: string, email: string, username: string
-}
-
-declare global {
-    namespace Express {
-        interface Request {
-            user: decodeUserType
-        }
-    }
-}
 
 export const isAuth = asyncHandler((req: Request, res: Response, next: NextFunction) => {
 

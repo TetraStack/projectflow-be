@@ -9,7 +9,7 @@ import crypto from "crypto";
 import { emailVerificationMailGenContent, forgotPasswordMailGenContent, sendMail } from "@/utils/mail";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken"
-import { decodeUserType } from "@/middlewares/isAuth";
+import { decodeUserType } from "@/types/express";
 
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
     const { username, email, fullName, password } = req.body;
@@ -57,7 +57,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
 
 export const getUser = asyncHandler(async (req: Request, res: Response) => {
 
-    const user = await User.findOne({ _id: req.user._id })
+    const user = await User.findOne({ _id: req.user!._id })
 
     if (!user) {
         throw new ApiError(401, "User not found")
@@ -241,7 +241,7 @@ export const changepassword = asyncHandler(async (req: Request, res: Response) =
 
     const { password: newPassword } = req.body
 
-    const user = await User.findOne({ _id: req.user._id })
+    const user = await User.findOne({ _id: req.user!._id })
 
     if (!user) throw new ApiError(401, "user not found")
 

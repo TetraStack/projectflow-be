@@ -1,9 +1,9 @@
 import mongoose, { Schema, model } from "mongoose";
 
-interface projectType extends Document {
+export interface projectType extends mongoose.Document {
     name: string,
     description: string,
-    createdBy: mongoose.ObjectId
+    createdBy: mongoose.Types.ObjectId
 }
 
 const projectSchema = new Schema<projectType>({
@@ -23,4 +23,5 @@ const projectSchema = new Schema<projectType>({
     }
 }, { timestamps: true })
 
-export const Project = model("Project", projectSchema)
+export const Project = model<projectType>("Project", projectSchema)
+

@@ -1,14 +1,20 @@
 import { addMemberToProject, createProject, deleteMember, deleteProject, getProjectById, getProjectMembers, getProjects, updateMemberRole, updateProject } from "@/controllers/project";
+import { isAuth } from "@/middlewares/isAuth";
+import { validate } from "@/middlewares/validator";
+import { memberRoleSchema, projectSchema, updateProjectSchema } from "@/validators/projectSchema";
 import { Router } from "express";
 
 export const router: Router = Router()
 
-router.post("/add-member", addMemberToProject)
-router.post("/", createProject)
-router.post("/delete-member", deleteMember)
-router.delete("/:id", deleteProject)
-router.get("/:id", getProjectById)
-router.get("/members/:id", getProjectMembers)
-router.get("/projects/:userId", getProjects)
-router.post("/update-member-role/:projectId/:memberId", updateMemberRole)
-router.patch("/:id", updateProject)
+router.use(isAuth)
+
+router.post("/", validate(projectSchema), createProject)
+router.get("/", getProjects)
+router.get("/:projectId", getProjectById)
+router.patch("/:projectId", validate(updateProjectSchema), updateProject)
+router.delete("/:projectId", deleteProject)
+
+router.post("/add-member/:projectId/:memberId", validate(memberRoleSchema), addMemberToProject)
+router.get("/members/:projectId", getProjectMembers)
+router.post("/update-member-role/:projectId/:userId", validate(memberRoleSchema), updateMemberRole)
+router.delete("/delete-member/:projectId/:userId", deleteMember)
