@@ -12,6 +12,10 @@ const envSchema = z.object({
     MAILTRAP_HOST_NAME: z.string().min(1, { message: "MAILTRAP_HOST_NAME is required" }),
     MAILTRAP_USERNAME: z.string().min(1, { message: "MAILTRAP_USERNAME is required" }),
     MAILTRAP_PASSWORD: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
+    AWS_ACCESSTOKEN: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
+    AWS_SECRETKEY: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
+    AWS_BUCKETNAME: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
+    AWS_BUCKETREGION: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
 })
 function createENV(env: NodeJS.ProcessEnv) {
     const validationResult = envSchema.safeParse(env)

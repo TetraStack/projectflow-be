@@ -1,9 +1,12 @@
 import express, { Express } from "express";
+import cookieParser from "cookie-parser";
 
 const app: Express = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(express.static("src/public"));
+app.use(cookieParser());
 
 //import routes here
 import { router as HealthCheckRouter } from "@/routes/healthCheck"

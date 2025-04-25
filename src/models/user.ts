@@ -2,10 +2,9 @@ import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt, { SignOptions } from "jsonwebtoken";
 import { env } from "@/env";
-import crypto from "crypto"
 
 interface userType extends Document {
-    avatar: { url: string, localPath: string },
+    avatar: { url: String, filename: String },
     username: string,
     email: string,
     fullName: string,
@@ -27,11 +26,11 @@ interface Methods {
 const userSchema = new Schema<userType, {}, Methods>({
     avatar: {
         type: {
-            url: String, localPath: String
+            url: String, filename: String,
         },
         default: {
             url: `https://placehold.co/600x400`,
-            localPath: ""
+            filename: ""
         }
     },
     username: {
@@ -97,7 +96,7 @@ userSchema.methods.generateAccesssTokens = function () {
         },
         process.env.ACCESS_TOKEN_SECRET!,
         {
-            expiresIn: parseInt(env.ACCESS_TOKEN_SECRET_EXPIRY)
+            expiresIn: "24h"
         })
 
 }
@@ -110,7 +109,7 @@ userSchema.methods.generateRefreshTokens = function () {
         },
         env.REFRESH_TOKEN_SECRET,
         {
-            expiresIn: parseInt(env.REFRESH_TOKEN_SECRET_EXPIRY)
+            expiresIn: "30d"
         })
 
 }

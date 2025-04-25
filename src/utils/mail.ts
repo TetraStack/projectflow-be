@@ -8,7 +8,7 @@ type optionType = {
     mailGenContent: Mailgen.Content
 }
 
-const sendMail = async (options: optionType) => {
+export const sendMail = async (options: optionType) => {
     const mailGenerator = new Mailgen({
         theme: 'default',
         product: {
@@ -44,41 +44,46 @@ const sendMail = async (options: optionType) => {
 
     try {
         await transporter.sendMail(mail)
+        return true
     } catch (error) {
         console.log("Problem while sending ")
     }
+
+    return false
 }
 
-const emailVerificationMailGenContent = (firstname: string, verificationUrl: string) => {
+export const emailVerificationMailGenContent = (firstname: string, verificationUrl: string) => {
     return {
-        name: firstname,
-        intro: `Welcome to ${env.APP_NAME}! We\'re very excited to have you on board.`,
-        action: {
-            instructions: 'To get started with ourApp, please click here:',
-            button: {
-                color: '#22BC66', // Optional action button color
-                text: 'Verify your email',
-                link: verificationUrl
-            }
-        },
-        outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
-
+        body: {
+            name: firstname,
+            intro: `Welcome to ${env.APP_NAME}! We\'re very excited to have you on board.`,
+            action: {
+                instructions: 'To get started with ourApp, please click here:',
+                button: {
+                    color: '#22BC66', // Optional action button color
+                    text: 'Verify your email',
+                    link: verificationUrl
+                }
+            },
+            outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
+        }
     }
 }
-const forgotPasswordMailGenContent = (firstname: string, passwordResetUrl: string) => {
+export const forgotPasswordMailGenContent = (firstname: string, passwordResetUrl: string) => {
     return {
-        name: firstname,
-        intro: `We got a request to reset your password `,
-        action: {
-            instructions: 'To change your password, please click here:',
-            button: {
-                color: '#22BC66', // Optional action button color
-                text: 'Verify your email',
-                link: passwordResetUrl
-            }
-        },
-        outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
-
+        body: {
+            name: firstname,
+            intro: `We got a request to reset your password `,
+            action: {
+                instructions: 'To change your password, please click here:',
+                button: {
+                    color: '#22BC66', // Optional action button color
+                    text: 'Reset Password',
+                    link: passwordResetUrl
+                }
+            },
+            outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
+        }
     }
 }
 
