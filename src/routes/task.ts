@@ -2,7 +2,7 @@ import { createSubTask, createTask, deleteSubTask, deleteTask, getTaskById, getT
 import { isAuth } from "@/middlewares/isAuth";
 import { upload } from "@/middlewares/multer";
 import { validate } from "@/middlewares/validator";
-import { createTaskSchema, updateTaskSchema } from "@/validators/taskSchema";
+import { createSubTaskSchema, createTaskSchema, updateSubTaskSchema, updateTaskSchema } from "@/validators/taskSchema";
 import { Router } from "express";
 
 export const router: Router = Router()
@@ -16,6 +16,6 @@ router.get("/task-details/:taskId", getTaskById)
 router.patch("/:taskId", validate(updateTaskSchema), updateTask)
 router.delete("/:taskId", deleteTask)
 
-router.post("/create-subtask", createSubTask)
-router.post("/delete-subtask/:subtaskId", deleteSubTask)
-router.post("/update-subtask/:subtaskId", updateSubTask)
+router.post("/create-subtask", validate(createSubTaskSchema), createSubTask)
+router.delete("/delete-subtask/:subtaskId", deleteSubTask)
+router.patch("/update-subtask/:subtaskId", validate(updateSubTaskSchema), updateSubTask)

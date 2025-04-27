@@ -1,4 +1,5 @@
 import { Project } from "@/models/project";
+import { SubTask } from "@/models/subtask";
 import { Task } from "@/models/task";
 import { User } from "@/models/user";
 import { ApiError } from "@/utils/apiError";
@@ -140,13 +141,31 @@ export const getTasks = asyncHandler(async (req: Request, res: Response) => {
                         }
                     },
                     {
+                        $lookup: {
+                            from: "subtasks",
+                            localField: "_id",
+                            foreignField: "task",
+                            as: "subtask",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        title: 1,
+                                        isCompleted: 1,
+                                        createdBy: 1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
                         $project: {
                             title: 1,
                             description: 1,
                             assignedTo: 1,
                             status: 1,
                             attachments: 1,
-                            assignedBy: 1
+                            assignedBy: 1,
+                            subtask: 1
                         }
                     }
                 ]
@@ -261,17 +280,37 @@ export const getTaskById = asyncHandler(async (req: Request, res: Response) => {
             }
         },
         {
+            $lookup: {
+                from: "subtasks",
+                localField: "_id",
+                foreignField: "task",
+                as: "subtasks",
+                pipeline: [
+                    {
+                        $project: {
+                            title: 1,
+                            isCompleted: 1,
+                            createdBy: 1
+                        }
+                    }
+                ]
+            }
+        },
+        {
             $project: {
                 title: 1,
                 description: 1,
+                subtasks: 1,
                 assignedTo: 1,
                 assignedBy: 1,
                 status: 1,
                 attachments: 1,
-                project: 1
+                project: 1,
             }
         }
     ]))[0]
+
+    console.log(task)
 
     if (!task) throw new ApiError(401, `No data found for ${taskId}`)
 
@@ -331,11 +370,100 @@ export const updateTask = asyncHandler(async (req: Request, res: Response) => {
 
 })
 
-export const deleteTask = asyncHandler(async (req: Request, res: Response) => { })
+export const deleteTask = asyncHandler(async (req: Request, res: Response) => {
+    const { taskId } = req.params
 
-export const createSubTask = asyncHandler(async (req: Request, res: Response) => { })
+    if (!taskId) throw new ApiError(422, "Please provide taskId")
 
-export const deleteSubTask = asyncHandler(async (req: Request, res: Response) => { })
+    const deletedtask = await Task.deleteOne({
+        _id: new mongoose.Types.ObjectId(taskId)
+    })
 
-export const updateSubTask = asyncHandler(async (req: Request, res: Response) => { })
+    if (!deletedtask.deletedCount) throw new ApiError(401, "task not found")
+
+    await SubTask.deleteMany({
+        task: new mongoose.Types.ObjectId(taskId)
+    })
+
+    res.status(200).json(
+        new ApiResponse(200, "Task has been deleted")
+    )
+})
+
+export const createSubTask = asyncHandler(async (req: Request, res: Response) => {
+
+    const { title, taskId, isCompleted } = req.body
+
+    const task = await Task.findById({
+        _id: new mongoose.Types.ObjectId(taskId),
+    })
+
+    if (!task) throw new ApiError(400, "Invalid taskId")
+
+    const insertedSubTask = await SubTask.create({
+        title,
+        task: new mongoose.Types.ObjectId(taskId),
+        isCompleted,
+        createdBy: new mongoose.Types.ObjectId(req.user?._id)
+    })
+
+    if (!insertedSubTask) throw new ApiError(500, "Something went wrong")
+
+    res.status(201).json(new ApiResponse(201, "SubTask has been added", {
+        subtask: {
+            title,
+            taskId,
+            isCompleted,
+            createdBy: new mongoose.Types.ObjectId(req.user?._id)
+        }
+    }))
+})
+
+export const deleteSubTask = asyncHandler(async (req: Request, res: Response) => {
+    const { subtaskId } = req.params
+
+    if (!subtaskId) throw new ApiError(400, "Please provide subtaskId")
+
+    const deletedSubTask = await SubTask.deleteOne({
+        _id: new mongoose.Types.ObjectId(subtaskId)
+    })
+
+    if (!deletedSubTask.deletedCount) throw new ApiError(400, "Invalid subtaskId")
+
+    res.status(200).json(
+        new ApiResponse(200, "SubTask has been deleted")
+    )
+})
+
+export const updateSubTask = asyncHandler(async (req: Request, res: Response) => {
+    const { subtaskId } = req.params
+    const { title, taskId, isCompleted } = req.body
+
+    const task = await Task.findById({
+        _id: new mongoose.Types.ObjectId(taskId)
+    })
+
+    if (!task) throw new ApiError(400, "Invalid taskId")
+
+    const subTask = await SubTask.findById({
+        _id: new mongoose.Types.ObjectId(subtaskId)
+    })
+
+    if (!subTask) throw new ApiError(400, "Invalid SubtaskId")
+
+    if (title) subTask.title = title
+    if (isCompleted) subTask.isCompleted = isCompleted
+    if (taskId) subTask.task = taskId
+
+    await subTask.save()
+
+    res.status(200).json(
+        new ApiResponse(200, "Subtask has been updated", {
+            _id: subTask._id,
+            title: subTask.title,
+            taskId: subTask.task,
+            isCompleted: subTask.isCompleted
+        })
+    )
+})
 

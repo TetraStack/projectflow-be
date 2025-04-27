@@ -1,5 +1,6 @@
 import { Project } from "@/models/project";
 import { ProjectMember } from "@/models/projectMember";
+import { Task } from "@/models/task";
 import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
@@ -74,10 +75,121 @@ export const getProjects = asyncHandler(async (req: Request, res: Response) => {
             }
         },
         {
+            $lookup: {
+                from: "tasks",
+                localField: "_id",
+                foreignField: "project",
+                as: "tasks",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "subtasks",
+                            localField: "_id",
+                            foreignField: "task",
+                            as: "subtasks",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        title: 1,
+                                        isCompleted: 1,
+                                        createdBy: 1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "assignedTo",
+                            foreignField: "_id",
+                            as: "assignedTo",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        userId: "$_id",
+                                        avatar: 1,
+                                        username: 1,
+                                        email: 1,
+                                        fullname: 1,
+                                        _id: 0
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $unwind: {
+                            path: "$assignedTo",
+                            preserveNullAndEmptyArrays: true
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "assignedBy",
+                            foreignField: "_id",
+                            as: "assignedBy",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        userId: "$_id",
+                                        avatar: 1,
+                                        username: 1,
+                                        email: 1,
+                                        fullname: 1,
+                                        _id: 0
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $unwind: {
+                            path: "$assignedBy",
+                            preserveNullAndEmptyArrays: true
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 1,
+                            title: 1,
+                            description: 1,
+                            assignedTo: 1,
+                            assignedBy: 1,
+                            status: 1,
+                            attachments: 1,
+                            subtasks: 1
+
+                        }
+                    }
+
+                ]
+            }
+        },
+        {
+            $lookup: {
+                from: "projectnotes",
+                localField: "_id",
+                foreignField: "project",
+                as: "notes",
+                pipeline: [
+                    {
+                        $project: {
+                            createdBy: 1,
+                            content: 1
+                        }
+                    }
+                ]
+            }
+        },
+        {
             $project: {
                 members: 1,
                 name: 1,
                 description: 1,
+                tasks: 1,
+                notes: 1
             }
         }
     ])
@@ -128,10 +240,121 @@ export const getProjectById = asyncHandler(async (req: Request, res: Response) =
             }
         },
         {
+            $lookup: {
+                from: "tasks",
+                localField: "_id",
+                foreignField: "project",
+                as: "tasks",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "subtasks",
+                            localField: "_id",
+                            foreignField: "task",
+                            as: "subtasks",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        title: 1,
+                                        isCompleted: 1,
+                                        createdBy: 1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "assignedTo",
+                            foreignField: "_id",
+                            as: "assignedTo",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        userId: "$_id",
+                                        avatar: 1,
+                                        username: 1,
+                                        email: 1,
+                                        fullname: 1,
+                                        _id: 0
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $unwind: {
+                            path: "$assignedTo",
+                            preserveNullAndEmptyArrays: true
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "assignedBy",
+                            foreignField: "_id",
+                            as: "assignedBy",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        userId: "$_id",
+                                        avatar: 1,
+                                        username: 1,
+                                        email: 1,
+                                        fullname: 1,
+                                        _id: 0
+                                    }
+                                }
+                            ]
+                        },
+                    },
+                    {
+                        $unwind: {
+                            path: "$assignedBy",
+                            preserveNullAndEmptyArrays: true
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 1,
+                            title: 1,
+                            description: 1,
+                            assignedTo: 1,
+                            assignedBy: 1,
+                            status: 1,
+                            attachments: 1,
+                            subtasks: 1
+
+                        }
+                    }
+
+                ]
+            }
+        },
+        {
+            $lookup: {
+                from: "projectnotes",
+                localField: "_id",
+                foreignField: "project",
+                as: "notes",
+                pipeline: [
+                    {
+                        $project: {
+                            createdBy: 1,
+                            content: 1
+                        }
+                    }
+                ]
+            }
+        },
+        {
             $project: {
                 members: 1,
                 name: 1,
                 description: 1,
+                tasks: 1,
+                notes: 1
             }
         }
     ]))[0]
@@ -148,10 +371,14 @@ export const deleteProject = asyncHandler(async (req: Request, res: Response) =>
 
     const project = await Project.findOneAndDelete({ _id: projectId })
 
+    if (!project) throw new ApiError(401, "No Data found")
+
     await ProjectMember.deleteMany(
         { project: new mongoose.Types.ObjectId(projectId) })
 
-    if (!project) throw new ApiError(401, "No Data found")
+    const deletedTask = await Task.deleteMany({
+        project: new mongoose.Types.ObjectId(projectId)
+    })
 
     res.status(200).json(new ApiResponse(200, "Project has been deleted"))
 })

@@ -24,3 +24,17 @@ export const updateTaskSchema = z.object({
 }).refine(data => data.title || data.description || data.projectId || data.assignedTo || data.status, {
     message: " Nothing to update."
 })
+
+export const createSubTaskSchema = z.object({
+    title: z.string({ required_error: "Title is required" }).min(1, "Title can't be empty"),
+    taskId: z.string({ required_error: "taskId is required" }).min(1, "taskId can't be empty"),
+    isCompleted: z.string().optional(),
+})
+
+export const updateSubTaskSchema = z.object({
+    title: z.string().min(1, "Title can't be empty").optional(),
+    taskId: z.string().min(1, "taskId can't be empty").optional(),
+    isCompleted: z.string().optional(),
+}).refine(data => data.title || data.taskId || data.isCompleted, {
+    message: " Nothing to update."
+})
