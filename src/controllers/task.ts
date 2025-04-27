@@ -339,7 +339,7 @@ export const updateTask = asyncHandler(async (req: Request, res: Response) => {
     const { title, description, projectId, assignedTo, status } = req.body
 
     const userRole = await getRole(req.user!._id, projectId)
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 
@@ -392,7 +392,7 @@ export const deleteTask = asyncHandler(async (req: Request, res: Response) => {
     if (!task) throw new ApiError(401, "No task found")
 
     const userRole = await getRole(req.user!._id, task.project.toString())
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 
@@ -424,7 +424,7 @@ export const createSubTask = asyncHandler(async (req: Request, res: Response) =>
     if (!task) throw new ApiError(400, "Invalid taskId")
 
     const userRole = await getRole(req.user!._id, task.project.toString())
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 
@@ -460,7 +460,7 @@ export const deleteSubTask = asyncHandler(async (req: Request, res: Response) =>
         _id: subtask!.task
     })
     const userRole = await getRole(req.user!._id, task!.project.toString())
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 
@@ -487,7 +487,7 @@ export const updateSubTask = asyncHandler(async (req: Request, res: Response) =>
         _id: subtask!.task
     })
     const userRole = await getRole(req.user!._id, parentTask!.project.toString())
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 

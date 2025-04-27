@@ -371,7 +371,7 @@ export const deleteProject = asyncHandler(async (req: Request, res: Response) =>
     const { projectId } = req.params
 
     const userRole = await getRole(req.user!._id, projectId)
-    if (userRole === UserRolesEnum.MEMBER || UserRolesEnum.PROJECT_ADMIN || "NoPermission") {
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 
@@ -394,7 +394,7 @@ export const updateProject = asyncHandler(async (req: Request, res: Response) =>
     const { name, description } = req.body
 
     const userRole = await getRole(req.user!._id, projectId)
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 
@@ -417,7 +417,8 @@ export const addMemberToProject = asyncHandler(async (req: Request, res: Respons
     const { role } = req.body
 
     const userRole = await getRole(req.user!._id, projectId)
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 
@@ -491,7 +492,7 @@ export const updateMemberRole = asyncHandler(async (req: Request, res: Response)
     const { role } = req.body
 
     const userRole = await getRole(req.user!._id, projectId)
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 
@@ -518,7 +519,7 @@ export const deleteMember = asyncHandler(async (req: Request, res: Response) => 
     const { projectId, userId } = req.params
 
     const userRole = await getRole(req.user!._id, projectId)
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
         throw new ApiError(403, "UnAuthorized request")
     }
 
