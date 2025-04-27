@@ -5,6 +5,7 @@ import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
 import { UserRolesEnum } from "@/utils/constants";
+import { getRole } from "@/utils/helper";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -369,6 +370,11 @@ export const getProjectById = asyncHandler(async (req: Request, res: Response) =
 export const deleteProject = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params
 
+    const userRole = await getRole(req.user!._id, projectId)
+    if (userRole === UserRolesEnum.MEMBER || UserRolesEnum.PROJECT_ADMIN || "NoPermission") {
+        throw new ApiError(403, "UnAuthorized request")
+    }
+
     const project = await Project.findOneAndDelete({ _id: projectId })
 
     if (!project) throw new ApiError(401, "No Data found")
@@ -387,6 +393,11 @@ export const updateProject = asyncHandler(async (req: Request, res: Response) =>
     let projectId = req.params.projectId
     const { name, description } = req.body
 
+    const userRole = await getRole(req.user!._id, projectId)
+    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+        throw new ApiError(403, "UnAuthorized request")
+    }
+
     const project = await Project.findById({ _id: projectId })
 
     if (!project) throw new ApiError(401, "Project not found")
@@ -404,6 +415,11 @@ export const updateProject = asyncHandler(async (req: Request, res: Response) =>
 export const addMemberToProject = asyncHandler(async (req: Request, res: Response) => {
     const { projectId, memberId } = req.params
     const { role } = req.body
+
+    const userRole = await getRole(req.user!._id, projectId)
+    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+        throw new ApiError(403, "UnAuthorized request")
+    }
 
     if (!projectId) throw new ApiError(422, "Please provide projectId")
     if (!memberId) throw new ApiError(422, "Please provide memberId")
@@ -474,6 +490,11 @@ export const updateMemberRole = asyncHandler(async (req: Request, res: Response)
     const { projectId, userId } = req.params
     const { role } = req.body
 
+    const userRole = await getRole(req.user!._id, projectId)
+    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+        throw new ApiError(403, "UnAuthorized request")
+    }
+
     if (!projectId) throw new ApiError(422, "Please provide projectId")
     if (!userId) throw new ApiError(422, "Please provide userId")
 
@@ -495,6 +516,11 @@ export const updateMemberRole = asyncHandler(async (req: Request, res: Response)
 
 export const deleteMember = asyncHandler(async (req: Request, res: Response) => {
     const { projectId, userId } = req.params
+
+    const userRole = await getRole(req.user!._id, projectId)
+    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
+        throw new ApiError(403, "UnAuthorized request")
+    }
 
     if (!projectId) throw new ApiError(422, "Please provide projectId")
     if (!userId) throw new ApiError(422, "Please provide userId")
