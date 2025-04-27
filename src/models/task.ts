@@ -46,7 +46,7 @@ const taskSchema = new Schema<taskType>({
     attachments: {
         type: [
             {
-                url: string,
+                url: String,
                 mimeType: String,
                 size: Number
             }

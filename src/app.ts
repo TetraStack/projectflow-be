@@ -18,9 +18,9 @@ import { errorHandler } from "./middlewares/errorHandler";
 
 app.use("/api/v1/healthcheck", HealthCheckRouter)
 app.use("/api/v1/user", userRouter)
-app.use("/api/v1/note", noteRouter)
 app.use("/api/v1/project", projectRouter)
 app.use("/api/v1/task", taskRouter)
+app.use("/api/v1/note", noteRouter)
 
 app.use(errorHandler);
 export default app
