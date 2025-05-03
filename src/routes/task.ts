@@ -1,5 +1,5 @@
 import { createSubTask, createTask, deleteSubTask, deleteTask, getTaskById, getTasks, updateSubTask, updateTask } from "@/controllers/task";
-import { isAuth } from "@/middlewares/isAuth";
+import { isAuth } from "@/middlewares/isAuthenticated";
 import { upload } from "@/middlewares/multer";
 import { validate } from "@/middlewares/validator";
 import { createSubTaskSchema, createTaskSchema, updateSubTaskSchema, updateTaskSchema } from "@/validators/taskSchema";

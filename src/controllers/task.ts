@@ -6,19 +6,12 @@ import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
 import { uploadTos3 } from "@/utils/awsHelper";
-import { UserRolesEnum } from "@/utils/constants";
-import { getRole } from "@/utils/helper";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 
 export const createTask = asyncHandler(async (req: Request, res: Response) => {
 
     let { title, description, project, assignedTo, status } = req.body
-
-    const userRole = await getRole(req.user!._id, project)
-    if (userRole === UserRolesEnum.MEMBER || "NoPermission") {
-        throw new ApiError(403, "UnAuthorized request")
-    }
 
     // check project id from db
     const isvalidProjectId = await Project.findById({ _id: new mongoose.Types.ObjectId(project) })
@@ -338,11 +331,6 @@ export const updateTask = asyncHandler(async (req: Request, res: Response) => {
 
     const { title, description, projectId, assignedTo, status } = req.body
 
-    const userRole = await getRole(req.user!._id, projectId)
-    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
-        throw new ApiError(403, "UnAuthorized request")
-    }
-
     const task = await Task.findById({
         _id: new mongoose.Types.ObjectId(taskId)
     })
@@ -385,17 +373,6 @@ export const updateTask = asyncHandler(async (req: Request, res: Response) => {
 export const deleteTask = asyncHandler(async (req: Request, res: Response) => {
     const { taskId } = req.params
 
-    const task = await Task.findOne({
-        _id: new mongoose.Types.ObjectId(taskId)
-    })
-
-    if (!task) throw new ApiError(401, "No task found")
-
-    const userRole = await getRole(req.user!._id, task.project.toString())
-    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
-        throw new ApiError(403, "UnAuthorized request")
-    }
-
     if (!taskId) throw new ApiError(422, "Please provide taskId")
 
     const deletedtask = await Task.deleteOne({
@@ -416,17 +393,6 @@ export const deleteTask = asyncHandler(async (req: Request, res: Response) => {
 export const createSubTask = asyncHandler(async (req: Request, res: Response) => {
 
     const { title, taskId, isCompleted } = req.body
-
-    const task = await Task.findById({
-        _id: new mongoose.Types.ObjectId(taskId),
-    })
-
-    if (!task) throw new ApiError(400, "Invalid taskId")
-
-    const userRole = await getRole(req.user!._id, task.project.toString())
-    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
-        throw new ApiError(403, "UnAuthorized request")
-    }
 
     const insertedSubTask = await SubTask.create({
         title,
@@ -452,18 +418,6 @@ export const deleteSubTask = asyncHandler(async (req: Request, res: Response) =>
 
     if (!subtaskId) throw new ApiError(400, "Please provide subtaskId")
 
-    //checking permission
-    const subtask = await SubTask.findById({
-        _id: new mongoose.Types.ObjectId(subtaskId)
-    })
-    const task = await Task.findById({
-        _id: subtask!.task
-    })
-    const userRole = await getRole(req.user!._id, task!.project.toString())
-    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
-        throw new ApiError(403, "UnAuthorized request")
-    }
-
     const deletedSubTask = await SubTask.deleteOne({
         _id: new mongoose.Types.ObjectId(subtaskId)
     })
@@ -478,18 +432,6 @@ export const deleteSubTask = asyncHandler(async (req: Request, res: Response) =>
 export const updateSubTask = asyncHandler(async (req: Request, res: Response) => {
     const { subtaskId } = req.params
     const { title, taskId, isCompleted } = req.body
-
-    //checking permission
-    const subtask = await SubTask.findById({
-        _id: new mongoose.Types.ObjectId(subtaskId)
-    })
-    const parentTask = await Task.findById({
-        _id: subtask!.task
-    })
-    const userRole = await getRole(req.user!._id, parentTask!.project.toString())
-    if ((userRole === UserRolesEnum.MEMBER) || (userRole === "NoPermission")) {
-        throw new ApiError(403, "UnAuthorized request")
-    }
 
     const task = await Task.findById({
         _id: new mongoose.Types.ObjectId(taskId)

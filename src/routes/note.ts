@@ -1,5 +1,5 @@
 import { createNote, deleteNote, getNoteById, getNotes, updateNote } from "@/controllers/note";
-import { isAuth } from "@/middlewares/isAuth";
+import { isAuth } from "@/middlewares/isAuthenticated";
 import { validate } from "@/middlewares/validator";
 import { createNoteSchema, updateNoteSchema } from "@/validators/noteSchema";
 import { Router } from "express";
