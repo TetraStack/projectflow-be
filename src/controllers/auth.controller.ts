@@ -1,5 +1,5 @@
-import { env } from "@/env";
-import { User } from "@/models/user";
+import { env } from "@/validators/env";
+import { User } from "@/models/user.model";
 import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";

@@ -1,7 +1,7 @@
-import { Project } from "@/models/project";
-import { SubTask } from "@/models/subtask";
-import { Task } from "@/models/task";
-import { User } from "@/models/user";
+import { Project } from "@/models/project.model";
+import { SubTask } from "@/models/subtask.model";
+import { Task } from "@/models/task.model";
+import { User } from "@/models/user.model";
 import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";

@@ -1,4 +1,4 @@
-import { changepassword, forgetPassword, getUser, loginUser, logoutUser, refreshAccessToken, registerUser, resendVerification, resetPassword, verifyUser } from "@/controllers/auth";
+import { changepassword, forgetPassword, getUser, loginUser, logoutUser, refreshAccessToken, registerUser, resendVerification, resetPassword, verifyUser } from "@/controllers/auth.controller";
 import { isAuth } from "@/middlewares/isAuthenticated";
 import { upload } from "@/middlewares/multer";
 import { validate } from "@/middlewares/validator";

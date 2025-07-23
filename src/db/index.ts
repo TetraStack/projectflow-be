@@ -1,4 +1,4 @@
-import { env } from "@/env"
+import { env } from "@/validators/env"
 import mongoose from "mongoose"
 
 const connectDB = async () => {

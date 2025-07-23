@@ -1,5 +1,5 @@
-import { ProjectNote } from "@/models/note";
-import { Project } from "@/models/project";
+import { ProjectNote } from "@/models/note.model";
+import { Project } from "@/models/project.model";
 import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";

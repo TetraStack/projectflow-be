@@ -1,4 +1,4 @@
-import { addMemberToProject, createProject, deleteMember, deleteProject, getProjectById, getProjectMembers, getProjects, updateMemberRole, updateProject } from "@/controllers/project";
+import { addMemberToProject, createProject, deleteMember, deleteProject, getProjectById, getProjectMembers, getProjects, updateMemberRole, updateProject } from "@/controllers/project.controller";
 import { isAuth } from "@/middlewares/isAuthenticated";
 import { isAuthorized } from "@/middlewares/isAuthorized";
 import { validate } from "@/middlewares/validator";

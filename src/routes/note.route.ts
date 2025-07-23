@@ -1,4 +1,4 @@
-import { createNote, deleteNote, getNoteById, getNotes, updateNote } from "@/controllers/note";
+import { createNote, deleteNote, getNoteById, getNotes, updateNote } from "@/controllers/note.controller";
 import { isAuth } from "@/middlewares/isAuthenticated";
 import { validate } from "@/middlewares/validator";
 import { createNoteSchema, updateNoteSchema } from "@/validators/noteSchema";
