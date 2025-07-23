@@ -1,10 +1,11 @@
-import { Project } from "@/models/project";
-import { ProjectMember } from "@/models/projectMember";
-import { Task } from "@/models/task";
+import { Project } from "@/models/project.model";
+import { ProjectMember } from "@/models/projectMember.model";
+import { Task } from "@/models/task.model";
 import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
 import { asyncHandler } from "@/utils/asyncHandler";
 import { UserRolesEnum } from "@/utils/constants";
+import { emitToProject } from "@/utils/emitSocketEvent";
 import { getRole } from "@/utils/helper";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
@@ -405,6 +406,8 @@ export const updateProject = asyncHandler(async (req: Request, res: Response) =>
     if (name) project.name = name
     if (description) project.description = description
     await project.save()
+
+    emitToProject(projectId, "projectUpdated", project)
 
     if (!project) throw new ApiError(401, "No Data found")
     res.status(200).json(new ApiResponse(200, "Project has been updated", {

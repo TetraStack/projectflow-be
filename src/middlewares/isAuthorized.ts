@@ -1,4 +1,4 @@
-import { ProjectMember } from "@/models/projectMember";
+import { ProjectMember } from "@/models/projectMember.model";
 import { ApiError } from "@/utils/apiError";
 import { asyncHandler } from "@/utils/asyncHandler";
 import { UserRolesEnum } from "@/utils/constants";

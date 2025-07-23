@@ -1,4 +1,4 @@
-import { ProjectMember } from "@/models/projectMember"
+import { ProjectMember } from "@/models/projectMember.model"
 import mongoose from "mongoose"
 import { ApiError } from "./apiError"
 

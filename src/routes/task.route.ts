@@ -1,4 +1,4 @@
-import { createSubTask, createTask, deleteSubTask, deleteTask, getTaskById, getTasks, updateSubTask, updateTask } from "@/controllers/task";
+import { createSubTask, createTask, deleteSubTask, deleteTask, getTaskById, getTasks, updateSubTask, updateTask } from "@/controllers/task.controller";
 import { isAuth } from "@/middlewares/isAuthenticated";
 import { upload } from "@/middlewares/multer";
 import { validate } from "@/middlewares/validator";

@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "@/validators/env";
 import Mailgen from "mailgen";
 import nodemailer from "nodemailer"
 

@@ -4,6 +4,7 @@ const envSchema = z.object({
     APP_NAME: z.string().min(1, { message: "App_Name is required" }),
     PORT: z.string().optional(),
     BASEURL: z.string().min(1, { message: "Base is required" }),
+    FRONTEND_URL: z.string().min(1, { message: "FRONTEND_URL is required" }),
     MONGO_URI: z.string().min(1, { message: "MONGO_URI is required" }),
     ACCESS_TOKEN_SECRET: z.string().min(1, { message: "ACCESS_TOKEN_SECRET is required" }),
     ACCESS_TOKEN_SECRET_EXPIRY: z.string().min(1, { message: "ACCESS_TOKEN_SECRET_EXPIRY is required" }),
@@ -16,6 +17,11 @@ const envSchema = z.object({
     AWS_SECRETKEY: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
     AWS_BUCKETNAME: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
     AWS_BUCKETREGION: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
+    NODE_ENV: z.string().min(1, { message: "NODE_ENV is required" }),
+    REDIS_URL: z.string().min(1, { message: "REDIS_URL is required" }),
+    REDIS_PORT: z.number().min(1, { message: "REDIS_PORT is required" }),
+    REDIS_USERNAME: z.string().min(1, { message: "REDIS_USERNAME is required" }),
+    REDIS_PASSWORD: z.string().min(1, { message: "REDIS_PASSWORD is required" }),
 })
 function createENV(env: NodeJS.ProcessEnv) {
     const validationResult = envSchema.safeParse(env)

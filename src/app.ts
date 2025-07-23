@@ -9,11 +9,11 @@ app.use(express.static("src/public"));
 app.use(cookieParser());
 
 //import routes here
-import { router as HealthCheckRouter } from "@/routes/healthCheck"
-import { router as userRouter } from "@/routes/auth"
-import { router as projectRouter } from "@/routes/project"
-import { router as taskRouter } from "@/routes/task"
-import { router as noteRouter } from "@/routes/note"
+import { router as HealthCheckRouter } from "@/routes/healthCheck.route"
+import { router as userRouter } from "@/routes/auth.route"
+import { router as projectRouter } from "@/routes/project.route"
+import { router as taskRouter } from "@/routes/task.route"
+import { router as noteRouter } from "@/routes/note.route"
 import { errorHandler } from "./middlewares/errorHandler";
 
 app.use("/api/v1/healthcheck", HealthCheckRouter)

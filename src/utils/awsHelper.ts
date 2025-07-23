@@ -1,5 +1,5 @@
 import { mys3Client } from "@/config/awsBucket";
-import { env } from "@/env";
+import { env } from "@/validators/env";
 import { DeleteObjectsCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { readFile, unlink } from "fs/promises";
 import { ApiError } from "./apiError";

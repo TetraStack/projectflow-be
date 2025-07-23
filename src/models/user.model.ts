@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { env } from "@/env";
+import { env } from "@/validators/env";
 
 interface userType extends Document {
     avatar: { url: String, filename: String },
