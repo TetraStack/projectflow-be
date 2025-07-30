@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+const IsDevelopment = process.env.NODE_ENV !== "Production"
+
 const envSchema = z.object({
     APP_NAME: z.string().min(1, { message: "App_Name is required" }),
     PORT: z.string().optional(),
@@ -19,9 +21,9 @@ const envSchema = z.object({
     AWS_BUCKETREGION: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
     NODE_ENV: z.string().min(1, { message: "NODE_ENV is required" }),
     REDIS_URL: z.string().min(1, { message: "REDIS_URL is required" }),
-    REDIS_PORT: z.number().min(1, { message: "REDIS_PORT is required" }),
-    REDIS_USERNAME: z.string().min(1, { message: "REDIS_USERNAME is required" }),
-    REDIS_PASSWORD: z.string().min(1, { message: "REDIS_PASSWORD is required" }),
+    REDIS_PORT: IsDevelopment ? z.number().optional() : z.number().min(1, { message: "REDIS_PORT is required" }),
+    REDIS_USERNAME: IsDevelopment ? z.string().optional() : z.string().min(1, { message: "REDIS_USERNAME is required" }),
+    REDIS_PASSWORD: IsDevelopment ? z.string().optional() : z.string().min(1, { message: "REDIS_PASSWORD is required" }),
 })
 function createENV(env: NodeJS.ProcessEnv) {
     const validationResult = envSchema.safeParse(env)

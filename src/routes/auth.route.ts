@@ -1,4 +1,4 @@
-import { changepassword, forgetPassword, getUser, loginUser, logoutUser, refreshAccessToken, registerUser, resendVerification, resetPassword, verifyUser } from "@/controllers/auth.controller";
+import { changepassword, checkUsername, forgetPassword, getUser, loginUser, logoutUser, refreshAccessToken, registerUser, resendVerification, resetPassword, verifyUser } from "@/controllers/auth.controller";
 import { isAuth } from "@/middlewares/isAuthenticated";
 import { upload } from "@/middlewares/multer";
 import { validate } from "@/middlewares/validator";
@@ -17,4 +17,6 @@ router.post("/reset-password", validate(resetPasswordSchema), resetPassword)
 router.post("/refresh-accesstoken", refreshAccessToken)
 router.post("/forget-password", validate(resendVerificationSchema), forgetPassword)
 router.post("/change-password", isAuth, validate(changePasswordSchema), changepassword)
+
+router.post("/check-username/:username", checkUsername)
 

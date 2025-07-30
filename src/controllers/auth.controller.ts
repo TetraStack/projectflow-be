@@ -252,3 +252,15 @@ export const changepassword = asyncHandler(async (req: Request, res: Response) =
     return res.status(200).clearCookie("accessToken").clearCookie("refreshToken").json(new ApiResponse(200, "Password has been changed"))
 })
 
+export const checkUsername = asyncHandler(async (req: Request, res: Response) => {
+    const { username } = req.params;
+
+    if (!username) throw new ApiError(422, "Username is not provided.")
+
+    const user = await User.findOne({ username })
+
+    if (user) throw new ApiError(409, "UserName is taken")
+
+    return res.status(200).json(new ApiResponse(200, "UserName is available"))
+})
+
