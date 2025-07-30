@@ -30,3 +30,4 @@ export const resetPasswordSchema = z.object({
 export const changePasswordSchema = z.object({
     password: z.string({ required_error: "Password is required" }).min(6, "length of Password can't be lessthan 6").max(16, "length of Password can't be more 16"),
 })
+
