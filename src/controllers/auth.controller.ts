@@ -46,11 +46,22 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
 
     sendMail({ email, subject: `Welcome to ${env.APP_NAME} app`, mailGenContent: mailContent })
 
-    return res.status(200).json(new ApiResponse(200, "Account has beeen created.Check your Inbox", {
+    const accessToken = createdUser.generateAccesssTokens()
+    const refreshToken = createdUser.generateRefreshTokens()
+
+    createdUser.refreshToken = refreshToken
+    await createdUser.save()
+
+    return res.status(200).cookie("accessToken", accessToken).cookie("refreshToken", refreshToken).json(new ApiResponse(200, "Account has beeen created.Check your Inbox", {
         profile: {
-            username,
-            email,
-            fullName
+            _id: createdUser._id,
+            username: createdUser.username,
+            email: createdUser.email,
+            fullName: createdUser.fullName,
+            avatar: createdUser.avatar,
+            isEmailVerified: createdUser.isEmailVerified,
+        }, tokens: {
+            accessToken, refreshToken
         }
     }))
 })
@@ -98,10 +109,12 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
     return res.status(200).cookie("accessToken", accessToken).cookie("refreshToken", refreshToken).json(new ApiResponse(200, "Logged in successFully", {
         profile: {
-            email,
+            _id: user._id,
             username: user.username,
+            email: user.email,
             fullName: user.fullName,
-            isEmailVerified: user.isEmailVerified
+            avatar: user.avatar,
+            isEmailVerified: user.isEmailVerified,
         },
         tokens: {
             accessToken, refreshToken
