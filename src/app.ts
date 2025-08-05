@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { logRequests } from "./middlewares/logRequests";
 
 const app: Express = express()
 
@@ -15,6 +16,7 @@ app.use(cors({
 
 }));
 
+app.use(logRequests)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static("src/public"));
