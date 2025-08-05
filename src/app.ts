@@ -4,6 +4,10 @@ import cors from "cors";
 
 const app: Express = express()
 
+// swagger setup
+import swaggerui from "swagger-ui-express"
+import * as swaggerDocument from "./swagger-output.json"
+
 // Enable CORS
 app.use(cors({
     origin: process.env.FRONTEND_URL || "http://localhost:5173",
@@ -15,6 +19,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static("src/public"));
 app.use(cookieParser());
+app.use("/api-docs", swaggerui.serve, swaggerui.setup(swaggerDocument));
 
 //import routes here
 import { router as HealthCheckRouter } from "@/routes/healthCheck.route"

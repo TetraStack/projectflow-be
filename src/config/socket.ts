@@ -8,12 +8,14 @@ import { registerProjectSocket } from "@/sockets/project.socket";
 
 let io: Server;
 
+console.log("isProducation:", env.NODE_ENV === "production")
+
 const pubClient = env.NODE_ENV === "production" ? new createClient({
     host: env.REDIS_URL,
-    port: env.REDIS_PORT,
+    port: Number(env.REDIS_PORT),
     username: env.REDIS_USERNAME,
     password: env.REDIS_PASSWORD,
-}) : new createClient({ host: 'localhost', port: 6379 })
+}) : new createClient({ host: 'redis', port: 6379 })
 const subClient = pubClient.duplicate()
 
 export const initSocket = (server: http.Server) => {
