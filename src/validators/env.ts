@@ -21,7 +21,7 @@ const envSchema = z.object({
     AWS_BUCKETREGION: z.string().min(1, { message: "MAILTRAP_PASSWORD is required" }),
     NODE_ENV: z.string().min(1, { message: "NODE_ENV is required" }),
     REDIS_URL: z.string().min(1, { message: "REDIS_URL is required" }),
-    REDIS_PORT: IsDevelopment ? z.number().optional() : z.number().min(1, { message: "REDIS_PORT is required" }),
+    REDIS_PORT: IsDevelopment ? z.string().optional() : z.string().min(1, { message: "REDIS_PORT is required" }),
     REDIS_USERNAME: IsDevelopment ? z.string().optional() : z.string().min(1, { message: "REDIS_USERNAME is required" }),
     REDIS_PASSWORD: IsDevelopment ? z.string().optional() : z.string().min(1, { message: "REDIS_PASSWORD is required" }),
 })
