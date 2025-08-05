@@ -1,0 +1,10 @@
+{"level":"info","message":{"duration":91,"ip":"::1","method":"POST","statusCode":404,"url":"/api/v1/user/login","userAgent":"PostmanRuntime/7.44.0"},"timestamp":"2025-08-05T19:48:25.057Z"}
+{"level":"info","message":{"duration":323,"ip":"::1","method":"POST","statusCode":200,"url":"/api/v1/user/","userAgent":"PostmanRuntime/7.44.0"},"timestamp":"2025-08-05T19:48:32.310Z"}
+[05 Aug, 2025 - 16:01:23:123] [34minfo[39m: [34m{[39m
+[34m  method: 'POST',[39m
+[34m  url: '/api/v1/user/login',[39m
+[34m  statusCode: 404,[39m
+[34m  duration: 67,[39m
+[34m  ip: '::1',[39m
+[34m  userAgent: 'PostmanRuntime/7.44.0'[39m
+[34m}[39m
