@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { env } from './validators/env';
+import { env } from './config/env';
 import connectDB from "@/db"
 import app from './app';
 import http from 'http'

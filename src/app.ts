@@ -21,7 +21,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static("src/public"));
 app.use(cookieParser());
-app.use("/api-docs", swaggerui.serve, swaggerui.setup(swaggerDocument));
+app.use("/", swaggerui.serve, swaggerui.setup(swaggerDocument));
 
 //import routes here
 import { router as HealthCheckRouter } from "@/routes/healthCheck.route"

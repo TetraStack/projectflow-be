@@ -1,4 +1,4 @@
-import { env } from "@/validators/env";
+import { env } from "@/config/env";
 import { User } from "@/models/user.model";
 import { ApiError } from "@/utils/apiError";
 import { ApiResponse } from "@/utils/apiResponse";
