@@ -1,7 +1,7 @@
 FROM node:20-alpine AS builder
 RUN corepack enable
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml tsconfig.json ./
 RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build
