@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import http from "http"
-import { env } from "@/validators/env";
+import { env } from "@/config/env";
 import { createAdapter } from "@socket.io/redis-adapter";
 import createClient from 'ioredis';
 import { register } from "module";
@@ -15,7 +15,7 @@ const pubClient = env.NODE_ENV === "production" ? new createClient({
     port: Number(env.REDIS_PORT),
     username: env.REDIS_USERNAME,
     password: env.REDIS_PASSWORD,
-}) : new createClient({ host: 'redis', port: 6379 })
+}) : new createClient({ host: env.REDIS_URL, port: Number(env.REDIS_PORT), })
 const subClient = pubClient.duplicate()
 
 export const initSocket = (server: http.Server) => {

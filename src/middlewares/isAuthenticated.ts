@@ -1,4 +1,4 @@
-import { env } from "@/validators/env";
+import { env } from "@/config/env";
 import { decodeUserType } from "@/types/express";
 import { ApiError } from "@/utils/apiError";
 import { asyncHandler } from "@/utils/asyncHandler";

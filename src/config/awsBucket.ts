@@ -1,4 +1,4 @@
-import { env } from "@/validators/env";
+import { env } from "@/config/env";
 import { S3Client } from "@aws-sdk/client-s3";
 
 export const mys3Client = new S3Client(

@@ -5,19 +5,23 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - redis
+      - redis-docker-service
       - mongodb
-    env_file: ".env"
+    env_file: ".env.local"
     volumes:
       - .:/usr/src/app
     restart: unless-stopped
+    networks:
+      - mynetwork
 
-  redis:
+  redis-docker-service:
     image: redis:latest
     container_name: redis
     ports:
       - "6379:6379"
     restart: unless-stopped
+    networks:
+      - mynetwork
 
   mongodb:
     image: mongo:latest
@@ -27,6 +31,10 @@ services:
     volumes:
       - mongo-data:/data/db
     restart: unless-stopped
+    networks:
+      - mynetwork
 
 volumes:
   mongo-data:
+networks:
+  mynetwork:
