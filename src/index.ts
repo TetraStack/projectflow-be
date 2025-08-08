@@ -5,7 +5,7 @@ import app from './app';
 import http from 'http'
 import { initSocket } from '@/config/socket'
 
-const PORT = env.PORT ?? 8000
+const PORT = env.port ?? 8000
 
 const server = http.createServer(app);
 initSocket(server)
