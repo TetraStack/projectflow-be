@@ -5,11 +5,13 @@
     "description": "A full-featured backend system to manage projects, team members, tasks, and notes.",
     "version": "1.0.0"
   },
-  "host": "https://www.projectflow.us",
+  "host": "api.projectflow.us",
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": [
+    "https"
+  ],
   "paths": {
-    "/api/v1/healthcheck/": {
+    "/v1/healthcheck/": {
       "get": {
         "description": "",
         "responses": {
@@ -19,7 +21,7 @@
         }
       }
     },
-    "/api/v1/user/": {
+    "/v1/user/": {
       "get": {
         "description": "",
         "parameters": [
@@ -67,7 +69,7 @@
         }
       }
     },
-    "/api/v1/user/login": {
+    "/v1/user/login": {
       "post": {
         "description": "",
         "parameters": [
@@ -94,7 +96,7 @@
         }
       }
     },
-    "/api/v1/user/logout": {
+    "/v1/user/logout": {
       "post": {
         "description": "",
         "parameters": [
@@ -111,7 +113,7 @@
         }
       }
     },
-    "/api/v1/user/verify": {
+    "/v1/user/verify": {
       "post": {
         "description": "",
         "parameters": [
@@ -138,7 +140,7 @@
         }
       }
     },
-    "/api/v1/user/resend-verification": {
+    "/v1/user/resend-verification": {
       "post": {
         "description": "",
         "parameters": [
@@ -162,7 +164,7 @@
         }
       }
     },
-    "/api/v1/user/reset-password": {
+    "/v1/user/reset-password": {
       "post": {
         "description": "",
         "parameters": [
@@ -192,7 +194,7 @@
         }
       }
     },
-    "/api/v1/user/refresh-accesstoken": {
+    "/v1/user/refresh-accesstoken": {
       "post": {
         "description": "",
         "parameters": [
@@ -216,7 +218,7 @@
         }
       }
     },
-    "/api/v1/user/forget-password": {
+    "/v1/user/forget-password": {
       "post": {
         "description": "",
         "parameters": [
@@ -240,7 +242,7 @@
         }
       }
     },
-    "/api/v1/user/change-password": {
+    "/v1/user/change-password": {
       "post": {
         "description": "",
         "parameters": [
@@ -269,7 +271,7 @@
         }
       }
     },
-    "/api/v1/user/check-username/{username}": {
+    "/v1/user/check-username/{username}": {
       "post": {
         "description": "",
         "parameters": [
@@ -287,7 +289,7 @@
         }
       }
     },
-    "/api/v1/project/": {
+    "/v1/project/": {
       "post": {
         "description": "",
         "parameters": [
@@ -334,7 +336,7 @@
         }
       }
     },
-    "/api/v1/project/{projectId}": {
+    "/v1/project/{projectId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -414,7 +416,7 @@
         }
       }
     },
-    "/api/v1/project/add-member/{projectId}/{memberId}": {
+    "/v1/project/add-member/{projectId}/{memberId}": {
       "post": {
         "description": "",
         "parameters": [
@@ -455,7 +457,7 @@
         }
       }
     },
-    "/api/v1/project/members/{projectId}": {
+    "/v1/project/members/{projectId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -478,7 +480,7 @@
         }
       }
     },
-    "/api/v1/project/update-member-role/{projectId}/{userId}": {
+    "/v1/project/update-member-role/{projectId}/{userId}": {
       "post": {
         "description": "",
         "parameters": [
@@ -519,7 +521,7 @@
         }
       }
     },
-    "/api/v1/project/delete-member/{projectId}/{userId}": {
+    "/v1/project/delete-member/{projectId}/{userId}": {
       "delete": {
         "description": "",
         "parameters": [
@@ -548,7 +550,7 @@
         }
       }
     },
-    "/api/v1/task/": {
+    "/v1/task/": {
       "post": {
         "description": "",
         "parameters": [
@@ -589,7 +591,7 @@
         }
       }
     },
-    "/api/v1/task/{projectId}": {
+    "/v1/task/{projectId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -612,7 +614,7 @@
         }
       }
     },
-    "/api/v1/task/task-details/{taskId}": {
+    "/v1/task/task-details/{taskId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -635,7 +637,7 @@
         }
       }
     },
-    "/api/v1/task/{taskId}": {
+    "/v1/task/{taskId}": {
       "patch": {
         "description": "",
         "parameters": [
@@ -703,7 +705,7 @@
         }
       }
     },
-    "/api/v1/task/create-subtask": {
+    "/v1/task/create-subtask": {
       "post": {
         "description": "",
         "parameters": [
@@ -738,7 +740,7 @@
         }
       }
     },
-    "/api/v1/task/delete-subtask/{subtaskId}": {
+    "/v1/task/delete-subtask/{subtaskId}": {
       "delete": {
         "description": "",
         "parameters": [
@@ -761,7 +763,7 @@
         }
       }
     },
-    "/api/v1/task/update-subtask/{subtaskId}": {
+    "/v1/task/update-subtask/{subtaskId}": {
       "patch": {
         "description": "",
         "parameters": [
@@ -802,7 +804,7 @@
         }
       }
     },
-    "/api/v1/note/": {
+    "/v1/note/": {
       "post": {
         "description": "",
         "parameters": [
@@ -834,7 +836,7 @@
         }
       }
     },
-    "/api/v1/note/{projectId}": {
+    "/v1/note/{projectId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -857,7 +859,7 @@
         }
       }
     },
-    "/api/v1/note/note-details/{noteId}": {
+    "/v1/note/note-details/{noteId}": {
       "get": {
         "description": "",
         "parameters": [
@@ -880,7 +882,7 @@
         }
       }
     },
-    "/api/v1/note/{noteId}": {
+    "/v1/note/{noteId}": {
       "patch": {
         "description": "",
         "parameters": [
