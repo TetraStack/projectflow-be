@@ -4,7 +4,7 @@ const IsDevelopment = process.env.NODE_ENV !== "Production"
 
 const envSchema = z.object({
     APP_NAME: z.string().min(1, { message: "App_Name is required" }),
-    port: z.string().optional(),
+    PORT: z.string().optional(),
     BASEURL: z.string().min(1, { message: "Base is required" }),
     FRONTEND_URL: z.string().min(1, { message: "FRONTEND_URL is required" }),
     MONGO_URI: z.string().min(1, { message: "MONGO_URI is required" }),
