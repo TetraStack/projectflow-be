@@ -40,7 +40,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
 
     if (!createdUser) throw new ApiError(500, "Something went wrong.")
 
-    const verificationLink = env.NODE_ENV === "production" ? `${env.BASEURL}/verify.html?id=${createdUser._id}&token=${token}` : `${env.BASEURL}:${env.port}/verify.html?id=${createdUser._id}&token=${token}`;
+    const verificationLink = env.NODE_ENV === "production" ? `${env.BASEURL}/verify.html?id=${createdUser._id}&token=${token}` : `${env.BASEURL}:${env.PORT}/verify.html?id=${createdUser._id}&token=${token}`;
 
     const mailContent = emailVerificationMailGenContent(createdUser.fullName, verificationLink)
 
@@ -175,7 +175,7 @@ export const resendVerification = asyncHandler(async (req: Request, res: Respons
         throw new ApiError(400, "No user Found")
     }
 
-    const verificationLink = env.NODE_ENV === "production" ? `${env.BASEURL}/verify.html?id=${updatedUser._id}&token=${token}` : `${env.BASEURL}:${env.port}/verify.html?id=${updatedUser._id}&token=${token}`;
+    const verificationLink = env.NODE_ENV === "production" ? `${env.BASEURL}/verify.html?id=${updatedUser._id}&token=${token}` : `${env.BASEURL}:${env.PORT}/verify.html?id=${updatedUser._id}&token=${token}`;
 
     const mailContent = emailVerificationMailGenContent(updatedUser.fullName, verificationLink)
 
@@ -225,7 +225,7 @@ export const forgetPassword = asyncHandler(async (req: Request, res: Response) =
 
     if (!user) throw new ApiError(404, "User not found")
 
-    const resetPasswordLink = env.NODE_ENV === "production" ? `${env.BASEURL}/reset-password.html?id=${user._id}&token=${token}` : `${env.BASEURL}:${env.port}/reset-password.html?id=${user._id}&token=${token}`;
+    const resetPasswordLink = env.NODE_ENV === "production" ? `${env.BASEURL}/reset-password.html?id=${user._id}&token=${token}` : `${env.BASEURL}:${env.PORT}/reset-password.html?id=${user._id}&token=${token}`;
 
     const mailContent = forgotPasswordMailGenContent(user.fullName, resetPasswordLink)
 
